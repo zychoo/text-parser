@@ -13,7 +13,6 @@ public class FileRandomAccessReader implements InputReader {
 
     private RandomAccessFile raf;
     private boolean endOfFileReached = false;
-//    private int previousChunkEnd = 0;
 
     public FileRandomAccessReader(String inputFileName) throws IOException {
         File file = new File(inputFileName);
@@ -30,21 +29,25 @@ public class FileRandomAccessReader implements InputReader {
             byte[] bytes;
             long fileSize = raf.length();
 
+            long left = fileSize - raf.getFilePointer();
+
             /*
             * Read small file in one piece.
             */
-            if (fileSize < buffLen) {
-                bytes = new byte[(int)fileSize];
+            if (left < buffLen) {
+                bytes = new byte[(int)left];
                 endOfFileReached = true;
-                raf.read(bytes, 0, (int) fileSize);
+                raf.read(bytes, 0, (int) left);
                 return new String(bytes);
             }
 
             bytes = new byte[buffLen];
-            raf.read(bytes, 0, buffLen/2);
+
+            int readLength = buffLen / 2;
+            raf.read(bytes, 0, readLength);
 
             int endOfChunk;
-            for (int i = buffLen/2;; i++) {
+            for (int i = readLength;; i++) {
                 int b = raf.read();
                 if (b == 13 || b == 10) {
                     endOfChunk = i;

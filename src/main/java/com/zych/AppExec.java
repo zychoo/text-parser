@@ -27,7 +27,6 @@ public class AppExec {
 
         InputReader inputReader;
         try {
-//            inputReader = new FileInputReader(inputFileName);
             inputReader = new FileRandomAccessReader(inputFileName);
             App app = new App(inputReader);
             app.run();
