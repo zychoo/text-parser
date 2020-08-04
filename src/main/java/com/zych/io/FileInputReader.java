@@ -1,10 +1,13 @@
 package com.zych.io;
 
+import lombok.extern.log4j.Log4j2;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
+@Log4j2
 public class FileInputReader implements InputReader{
 
     BufferedReader reader;
@@ -16,8 +19,16 @@ public class FileInputReader implements InputReader{
 
     @Override
     public String read() {
-        StringBuilder sb = new StringBuilder();
-        reader.lines().forEach(sb::append);
-        return sb.toString();
+        try {
+            String s;
+            if ((s = reader.readLine()) != null) {
+                return s;
+            }
+            reader.close();
+            return null;
+        } catch (IOException e) {
+            log.error("Error while reading input file", e);
+            return null;
+        }
     }
 }

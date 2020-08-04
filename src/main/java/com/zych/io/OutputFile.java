@@ -4,9 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 
 @Setter
 @Getter
@@ -14,14 +12,17 @@ import java.io.IOException;
 public class OutputFile {
 
     private String fileName;
-    private FileWriter writer = null;
+    private BufferedWriter writer = null;
 
     public OutputFile(String fileName) throws IOException {
-        writer = new FileWriter(new File(fileName));
+        writer = new BufferedWriter(new FileWriter(new File(fileName)));
     }
 
     public void write(String output) throws IOException {
-        writer.write(output);
+        writer.append(output);
+    }
+
+    public void close() throws IOException {
         writer.close();
     }
 }
