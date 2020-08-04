@@ -47,7 +47,7 @@ public class App {
     private Map<Sentence, Word[]> createSentenceToWordsMap(String input) {
         Map<Sentence, Word[]> sentenceMap = new LinkedHashMap<>();
 
-        StringTokenizer sentenceTokenizer = new StringTokenizer(input, ".\t\n\r\f");
+        StringTokenizer sentenceTokenizer = new StringTokenizer(input, ".!?\n\r\f");
         while (sentenceTokenizer.hasMoreTokens()) {
             Sentence s = new Sentence(sentenceTokenizer.nextToken());
             Word[] words = s.generateWordsFromSentence();

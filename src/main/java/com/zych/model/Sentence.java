@@ -10,9 +10,10 @@ import java.util.StringTokenizer;
 public class Sentence {
 
     private final String sentenceString;
+    private final String wordDelimiters = ", -(){}[]<>;:\"\t";
 
     public Word[] generateWordsFromSentence() {
-        StringTokenizer wordTokenizer = new StringTokenizer(sentenceString, ", ");
+        StringTokenizer wordTokenizer = new StringTokenizer(sentenceString, wordDelimiters);
         Word[] words = new Word[wordTokenizer.countTokens()];
         int i = 0;
         words[i++] = new Word(wordTokenizer.nextToken());
