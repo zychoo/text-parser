@@ -12,7 +12,6 @@ public class FileInputReader implements InputReader{
     public FileInputReader(String inputFileName) throws IOException {
         File file = new File(inputFileName);
         reader = new BufferedReader(new FileReader(file));
-        reader.close();
     }
 
     @Override
@@ -21,5 +20,4 @@ public class FileInputReader implements InputReader{
         reader.lines().forEach(sb::append);
         return sb.toString();
     }
-
 }
