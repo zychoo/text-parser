@@ -1,7 +1,7 @@
 package com.zych;
 
 import com.zych.configuration.LoggerConfiguration;
-import com.zych.io.FileInputReader;
+import com.zych.io.FileRandomAccessReader;
 import com.zych.io.InputReader;
 import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.Level;
@@ -27,7 +27,8 @@ public class AppExec {
 
         InputReader inputReader;
         try {
-            inputReader = new FileInputReader(inputFileName);
+//            inputReader = new FileInputReader(inputFileName);
+            inputReader = new FileRandomAccessReader(inputFileName);
             App app = new App(inputReader);
             app.run();
         } catch (IOException e) {

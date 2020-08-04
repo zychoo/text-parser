@@ -9,7 +9,7 @@ public class XmlOutputGenerator implements OutputGenerator {
     @Override
     public String generateOutput(Iterable<Word[]> objects) {
         final StringBuilder sb = new StringBuilder();
-        sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n").append("<text>\n");
+        sb.append(generateHeader());
 
         Iterator<Word[]> iterator = objects.iterator();
         while (iterator.hasNext()) {
@@ -21,7 +21,17 @@ public class XmlOutputGenerator implements OutputGenerator {
             sb.append("\t</sentence>\n");
         }
 
-        sb.append("</text>");
+        sb.append(generateFooter());
         return sb.toString();
+    }
+
+    @Override
+    public String generateHeader() {
+        return "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<text>\n";
+    }
+
+    @Override
+    public String generateFooter() {
+        return "</text>";
     }
 }

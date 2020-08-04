@@ -10,6 +10,9 @@ import com.zych.services.XmlOutputGenerator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -23,25 +26,33 @@ public class App {
     private final InputReader inputReader;
     private OutputGenerator outputGenerator;
 
-    public void run() {
+    public void run() throws IOException {
 
         log.info("Starting APP");
 
-        String input = inputReader.read();
+        String input;
         Map<Sentence, Word[]> sentenceMap;
-        do {
 
+        File csv = new File("output.csv");
+        BufferedWriter csvWriter = new BufferedWriter(new FileWriter(csv));
+        File xml = new File("output.xml");
+        BufferedWriter xmlWriter = new BufferedWriter(new FileWriter(xml));
+
+        OutputGenerator csvOutputGenerator = new CsvOutputGenerator();
+        OutputGenerator xmlOutputGenerator = new XmlOutputGenerator();
+
+        while ((input = inputReader.read()) != null) {
             sentenceMap = createSentenceToWordsMap(input);
+            String csvOutput = csvOutputGenerator.generateOutput(sentenceMap.values());
+            csvWriter.write(csvOutput);
+        }
 
-            try {
+        csvWriter.write(csvOutputGenerator.generateHeader());
 
-                writeCsvBatch(sentenceMap);
-                writeXmlBatch(sentenceMap);
+        csvWriter.close();
+        xmlWriter.close();
 
-            } catch (IOException e) {
-                log.error("Could not write to file", e);
-            }
-        } while ((input = inputReader.read()) != null);
+        log.info("App Done");
     }
 
     private Map<Sentence, Word[]> createSentenceToWordsMap(String input) {
@@ -55,16 +66,6 @@ public class App {
             sentenceMap.put(s, words);
         }
         return sentenceMap;
-    }
-
-
-    private void writeCsvBatch(Map<Sentence, Word[]> sentenceMap) throws IOException {
-//        int maxWords = 0;
-//        maxWords = Math.max(outputGenerator.countMaxSentenceWords(sentenceMap.values(), maxWords));
-        OutputFile csvOutputFile = new OutputFile("output.csv");
-        outputGenerator = new CsvOutputGenerator();
-        String csvOutput = outputGenerator.generateOutput(sentenceMap.values());
-        csvOutputFile.write(csvOutput);
     }
 
     private void writeXmlBatch(Map<Sentence, Word[]> sentenceMap) throws IOException {

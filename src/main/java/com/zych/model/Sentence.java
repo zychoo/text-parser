@@ -16,7 +16,6 @@ public class Sentence {
         StringTokenizer wordTokenizer = new StringTokenizer(sentenceString, wordDelimiters);
         Word[] words = new Word[wordTokenizer.countTokens()];
         int i = 0;
-        words[i++] = new Word(wordTokenizer.nextToken());
         while (wordTokenizer.hasMoreTokens()) {
             words[i++] = new Word(wordTokenizer.nextToken());
         }
