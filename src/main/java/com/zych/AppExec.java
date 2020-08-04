@@ -16,6 +16,8 @@ public class AppExec {
 
         LoggerConfiguration.setLoggingLevel(Level.INFO);
 
+        log.info("Starting APP");
+
         String inputFileName;
         if (args.length > 0 && args[0].equals("-f")) {
             inputFileName = args[1];
@@ -31,7 +33,8 @@ public class AppExec {
             App app = new App(inputReader);
             app.run();
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("Error while writing to output", e);
         }
+        log.info("App Done");
     }
 }

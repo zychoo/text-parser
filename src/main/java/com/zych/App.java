@@ -1,7 +1,6 @@
 package com.zych;
 
 import com.zych.io.InputReader;
-import com.zych.io.OutputFile;
 import com.zych.model.Sentence;
 import com.zych.model.Word;
 import com.zych.services.CsvOutputGenerator;
@@ -21,11 +20,9 @@ import java.util.StringTokenizer;
 public class App {
 
     private final InputReader inputReader;
-    private OutputGenerator outputGenerator;
 
     public void run() throws IOException {
 
-        log.info("Starting APP");
 
         String input;
         Map<Sentence, Word[]> sentenceMap;
@@ -53,7 +50,6 @@ public class App {
 
         addHeaderToCsv(csvTemp, csvOutputGenerator);
 
-        log.info("App Done");
     }
 
     private void addHeaderToCsv(File csvTemp, OutputGenerator csvOutputGenerator) throws IOException {
@@ -83,12 +79,4 @@ public class App {
         }
         return sentenceMap;
     }
-
-    private void writeXmlBatch(Map<Sentence, Word[]> sentenceMap) throws IOException {
-        OutputFile xmlOutputFile = new OutputFile("output.xml");
-        outputGenerator = new XmlOutputGenerator();
-        String xmlOutput = outputGenerator.generateOutput(sentenceMap.values());
-        xmlOutputFile.write(xmlOutput);
-    }
-
 }

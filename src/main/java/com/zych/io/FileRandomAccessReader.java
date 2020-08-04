@@ -32,7 +32,7 @@ public class FileRandomAccessReader implements InputReader {
             long left = fileSize - raf.getFilePointer();
 
             /*
-            * Read small file in one piece.
+            * Read small file or remaining part in one piece.
             */
             if (left < buffLen) {
                 bytes = new byte[(int)left];
