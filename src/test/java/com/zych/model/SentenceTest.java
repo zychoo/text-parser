@@ -27,11 +27,4 @@ class SentenceTest {
 
         Assertions.assertArrayEquals(new Word[]{new Word("Hello")}, words);
     }
-
-    @Test
-    void emptyStrung() {
-        Sentence s = new Sentence("");
-        Word[] words = s.generateWordsFromSentence();
-        System.out.println(words);
-    }
 }

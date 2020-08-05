@@ -4,14 +4,13 @@ import com.zych.io.InputReader;
 import com.zych.model.Sentence;
 import com.zych.model.Word;
 import com.zych.services.CsvOutputGenerator;
+import com.zych.services.InputParser;
 import com.zych.services.OutputGenerator;
 import com.zych.services.XmlOutputGenerator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
 import java.io.*;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 @Log4j2
@@ -32,10 +31,10 @@ public class App {
 
         OutputGenerator csvOutputGenerator = new CsvOutputGenerator();
         OutputGenerator xmlOutputGenerator = new XmlOutputGenerator();
-
+        InputParser parser = new InputParser();
         xmlWriter.write(xmlOutputGenerator.generateHeader());
         while ((input = inputReader.read()) != null) {
-            sentenceMap = createSentenceToWordsMap(input);
+            sentenceMap = parser.createSentenceToWordsMap(input);
             String csvOutput = csvOutputGenerator.generateOutput(sentenceMap.values());
             csvTempWriter.write(csvOutput);
             String xmlOutput = xmlOutputGenerator.generateOutput(sentenceMap.values());
@@ -66,16 +65,16 @@ public class App {
         log.info("Done rewriting csv");
     }
 
-    private Map<Sentence, Word[]> createSentenceToWordsMap(String input) {
-        Map<Sentence, Word[]> sentenceMap = new LinkedHashMap<>();
-        String abbreviations = "(?<!Mr|Mrs|Dr)";
-        String[] sentences = input.split("(?i)" + abbreviations + "[\\.\\!\\?]");
-        for (String sentence: sentences) {
-            Sentence s = new Sentence(sentence);
-            Word[] words = s.generateWordsFromSentence();
-            Arrays.sort(words);
-            sentenceMap.put(s, words);
-        }
-        return sentenceMap;
-    }
+//    private Map<Sentence, Word[]> createSentenceToWordsMap(String input) {
+//        Map<Sentence, Word[]> sentenceMap = new LinkedHashMap<>();
+//        String abbreviations = "(?<!Mr|Mrs|Dr)";
+//        String[] sentences = input.split("(?i)" + abbreviations + "[\\.\\!\\?]");
+//        for (String sentence: sentences) {
+//            Sentence s = new Sentence(sentence);
+//            Word[] words = s.generateWordsFromSentence();
+//            Arrays.sort(words);
+//            sentenceMap.put(s, words);
+//        }
+//        return sentenceMap;
+//    }
 }
