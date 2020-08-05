@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.LinkedList;
 
-class CsvOutputGeneratorTest {
+class XmlOutputGeneratorTest {
 
     private LinkedList<Word[]> input;
     private OutputGenerator outputGenerator;
@@ -15,22 +15,31 @@ class CsvOutputGeneratorTest {
     @BeforeEach
     public void setup() {
         input = InputGenerator.generateInput();
-        outputGenerator = new CsvOutputGenerator();
+        outputGenerator = new XmlOutputGenerator();
     }
 
     @Test
     void generateOutput() {
+
         String s = outputGenerator.generateOutput(input);
-        String expected = "Sentence 1, Ala, ma, kota\nSentence 2, Kot, nie, ma, Ali\n";
+        String expected = "\t<sentence>\n\t\t<word>Ala</word>\n\t\t<word>ma</word>\n\t\t<word>kota</word>\n\t" +
+                "</sentence>\n\t<sentence>\n\t\t<word>Kot</word>\n\t\t<word>nie</word>\n\t\t<word>ma</word>\n\t\t" +
+                "<word>Ali</word>\n\t</sentence>\n";
         Assertions.assertThat(s).isEqualTo(expected);
     }
 
     @Test
     void generateHeader() {
-        outputGenerator.generateOutput(input);
         String s = outputGenerator.generateHeader();
-        String expected = ", Word 1, Word 2, Word 3, Word 4";
+        String expected = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<text>\n";
 
+        Assertions.assertThat(s).isEqualTo(expected);
+    }
+
+    @Test
+    void generateFooter() {
+        String s = outputGenerator.generateFooter();
+        String expected = "</text>";
         Assertions.assertThat(s).isEqualTo(expected);
     }
 }

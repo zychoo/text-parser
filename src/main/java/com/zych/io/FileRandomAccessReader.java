@@ -1,5 +1,6 @@
 package com.zych.io;
 
+import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 
 import java.io.File;
@@ -9,13 +10,15 @@ import java.io.RandomAccessFile;
 import static com.zych.Constants.READ_BUFFER_LENGTH;
 
 @Log4j2
+@Getter
 public class FileRandomAccessReader implements InputReader {
 
+    private final File file;
     private RandomAccessFile raf;
     private boolean endOfFileReached = false;
 
     public FileRandomAccessReader(String inputFileName) throws IOException {
-        File file = new File(inputFileName);
+        this.file = new File(inputFileName);
         this.raf = new RandomAccessFile(file, "r");
     }
 

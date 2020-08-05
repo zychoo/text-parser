@@ -18,6 +18,7 @@ public class CsvOutputGenerator implements OutputGenerator {
             maxWords = 0;
             while (iterator.hasNext()) {
                 Word[] words = iterator.next();
+                if (words.length == 0) continue;
                 maxWords = Math.max(words.length, maxWords);
                 sb.append("Sentence ").append(sentenceCount++);
                 generateCsvOutputLine(words, sb);

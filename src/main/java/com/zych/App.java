@@ -9,6 +9,7 @@ import com.zych.services.OutputGenerator;
 import com.zych.services.XmlOutputGenerator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.apache.commons.io.FilenameUtils;
 
 import java.io.*;
 import java.util.Map;
@@ -24,9 +25,11 @@ public class App {
         String input;
         Map<Sentence, Word[]> sentenceMap;
 
+        String filename = FilenameUtils.removeExtension(inputReader.getFile().getName());
+
         File csvTemp = new File("output-temp.csv");
         BufferedWriter csvTempWriter = new BufferedWriter(new FileWriter(csvTemp));
-        File xml = new File("output.xml");
+        File xml = new File(filename + ".xml");
         BufferedWriter xmlWriter = new BufferedWriter(new FileWriter(xml));
 
         OutputGenerator csvOutputGenerator = new CsvOutputGenerator();
@@ -49,32 +52,19 @@ public class App {
     }
 
     private void addHeaderToCsv(File csvTemp, OutputGenerator csvOutputGenerator) throws IOException {
-        log.info("Rewriting csv to add header");
-        File csv = new File("output.csv");
+        String filename = FilenameUtils.removeExtension(inputReader.getFile().getName());
+        File csv = new File(filename + ".csv");
         BufferedWriter csvWriter = new BufferedWriter(new FileWriter(csv));
         csvWriter.write(csvOutputGenerator.generateHeader());
         BufferedReader csvReader = new BufferedReader(new FileReader(csvTemp));
         String line;
+        csvWriter.write("\n");
         while((line = csvReader.readLine()) != null) {
-            csvWriter.write("\n");
             csvWriter.write(line);
+            csvWriter.write("\n");
         }
         csvWriter.close();
         csvReader.close();
         csvTemp.delete();
-        log.info("Done rewriting csv");
     }
-
-//    private Map<Sentence, Word[]> createSentenceToWordsMap(String input) {
-//        Map<Sentence, Word[]> sentenceMap = new LinkedHashMap<>();
-//        String abbreviations = "(?<!Mr|Mrs|Dr)";
-//        String[] sentences = input.split("(?i)" + abbreviations + "[\\.\\!\\?]");
-//        for (String sentence: sentences) {
-//            Sentence s = new Sentence(sentence);
-//            Word[] words = s.generateWordsFromSentence();
-//            Arrays.sort(words);
-//            sentenceMap.put(s, words);
-//        }
-//        return sentenceMap;
-//    }
 }
