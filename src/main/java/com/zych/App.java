@@ -22,7 +22,6 @@ public class App {
 
     public void run() throws IOException {
 
-
         String input;
         Map<Sentence, Word[]> sentenceMap;
 
@@ -48,10 +47,10 @@ public class App {
         xmlWriter.close();
 
         addHeaderToCsv(csvTemp, csvOutputGenerator);
-
     }
 
     private void addHeaderToCsv(File csvTemp, OutputGenerator csvOutputGenerator) throws IOException {
+        log.info("Rewriting csv to add header");
         File csv = new File("output.csv");
         BufferedWriter csvWriter = new BufferedWriter(new FileWriter(csv));
         csvWriter.write(csvOutputGenerator.generateHeader());
@@ -64,6 +63,7 @@ public class App {
         csvWriter.close();
         csvReader.close();
         csvTemp.delete();
+        log.info("Done rewriting csv");
     }
 
     private Map<Sentence, Word[]> createSentenceToWordsMap(String input) {

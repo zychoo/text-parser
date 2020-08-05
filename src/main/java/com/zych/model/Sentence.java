@@ -12,7 +12,6 @@ public class Sentence {
     private final String sentenceString;
     private final String wordDelimiters = "([\\s,\\[\\]{}()<>/\\-:;])+";
 
-
     public Word[] generateWordsFromSentence() {
         String[] strings = sentenceString.split(wordDelimiters);
 
