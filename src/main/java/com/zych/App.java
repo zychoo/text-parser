@@ -13,7 +13,6 @@ import java.io.*;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.StringTokenizer;
 
 @Log4j2
 @RequiredArgsConstructor
@@ -69,10 +68,10 @@ public class App {
 
     private Map<Sentence, Word[]> createSentenceToWordsMap(String input) {
         Map<Sentence, Word[]> sentenceMap = new LinkedHashMap<>();
-
-        StringTokenizer sentenceTokenizer = new StringTokenizer(input, ".!?\n\r\f");
-        while (sentenceTokenizer.hasMoreTokens()) {
-            Sentence s = new Sentence(sentenceTokenizer.nextToken());
+        String abbreviations = "(?<!Mr|Mrs|Dr)";
+        String[] sentences = input.split("(?i)" + abbreviations + "[\\.\\!\\?]");
+        for (String sentence: sentences) {
+            Sentence s = new Sentence(sentence);
             Word[] words = s.generateWordsFromSentence();
             Arrays.sort(words);
             sentenceMap.put(s, words);

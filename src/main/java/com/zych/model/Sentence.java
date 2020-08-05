@@ -3,22 +3,25 @@ package com.zych.model;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.util.StringTokenizer;
+import java.util.LinkedList;
 
 @Getter
 @AllArgsConstructor
 public class Sentence {
 
     private final String sentenceString;
-    private final String wordDelimiters = ", -(){}[]<>;:\"\t";
+    private final String wordDelimiters = "([\\s,\\[\\]{}()<>/\\-:;])+";
+
 
     public Word[] generateWordsFromSentence() {
-        StringTokenizer wordTokenizer = new StringTokenizer(sentenceString, wordDelimiters);
-        Word[] words = new Word[wordTokenizer.countTokens()];
-        int i = 0;
-        while (wordTokenizer.hasMoreTokens()) {
-            words[i++] = new Word(wordTokenizer.nextToken());
+        String[] strings = sentenceString.split(wordDelimiters);
+
+        LinkedList<Word> words = new LinkedList<>();
+        for (String string : strings) {
+            if (string.isEmpty()) continue;
+            words.add(new Word(string));
         }
-        return words;
+        Word[] wordArr = new Word[words.size()];
+        return words.toArray(wordArr);
     }
 }
